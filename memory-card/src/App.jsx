@@ -1,55 +1,69 @@
-import { useEffect, useState ,useRef} from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-
+import { useEffect, useState, useRef } from "react";
+import {v4 as uuid} from 'uuid';
+import './App.css'
 function App() {
   const [users, setData] = useState([]);
   const fetched = useRef(false);
-  const fetchPokemonData=(pokemon)=>{
-      let url = pokemon.url
-      console.log(url) // <--- this is saving the pokemon url to a      variable to us in a fetch.(Ex: https://pokeapi.co/api/v2/pokemon/1/)
-        fetch(url)
-        .then(response => response.json())
-        .then(function(pokeData){
-  
-        setData([{name:pokemon.name,img:pokeData.sprites.front_default}])
-        })
+
+  function shuffleArray() {
+
+    const array=[...users]
+    array.sort(() => Math.random() - 0.5);
+    setData(array)
+    console.log(array)
   }
-  const fetchData = () => {
-    fetch("https://pokeapi.co/api/v2/pokemon")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        // console.log(data.results);
-        data.results.forEach(function(pokemon){
-          console.log(pokemon)
-          fetchPokemonData(pokemon); 
-        })
-      })
-      .catch((error)=>{
-        console.log(error)
+
+  const fetchPokemonData = (pokemon) => {
+    let url = pokemon.url;
+    console.log(url); // This saves the pokemon URL to use in a fetch (e.g., https://pokeapi.co/api/v2/pokemon/1/)
+    return fetch(url)
+      .then((response) => response.json())
+      .then(function (pokeData) {
+        return {
+          id:uuid(),
+          name: pokemon.name,
+          img: pokeData.sprites.front_default,
+          isClicked:false
+        };
       });
   };
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=36");
+      const data = await response.json();
+      const promises = data.results.map(fetchPokemonData);
+
+      const filteredPromises = promises.filter((_, index) => index % 3 === 0);
+
+      // Wait for all the filtered promises to resolve using Promise.all
+      const filteredPokemonData = await Promise.all(filteredPromises);
+
+      setData(filteredPokemonData);
+      fetched.current = true;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    if(fetched.current)return;
-    fetched.current=true;
-    fetchData();
-    // setCounter(count + 1);
+    if (!fetched.current) {
+      fetchData();
+    }
   }, []);
+
+
   return (
     <div>
       {users.length}
       {users.length > 0 && (
-        <ul>
-          {users.map((user,ind) => (
-            <div>
-            <li key={ind}>{user.name}</li>
-            <img src={user.img}></img>
+        <div className="cards">
+          {users.map((user) => (
+            <div className="container" key={user.id} onClick={shuffleArray}>
+              <img src={user.img} alt={user.name} />
             </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
