@@ -1,18 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-body{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Poppins', sans-serif;
-  text-transform: uppercase;
-}
 .cards{
   display:flex;
   gap:20px;
   flex-wrap: wrap;
 }
 .container{
-  width:700px;
+  width:900px;
 }
 .poke-container{
   display:flex;
@@ -34,6 +26,7 @@ img{
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap:5px;
+  font-size: 20px;
 }
 .scorecard div{
  justify-self: center;
