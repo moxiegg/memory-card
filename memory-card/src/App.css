@@ -1,9 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+body{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  text-transform: uppercase;
+}
 .cards{
   display:flex;
   gap:20px;
   flex-wrap: wrap;
 }
 .container{
+  width:700px;
+}
+.poke-container{
   display:flex;
   flex-direction: column;
   align-items: center;
@@ -15,6 +26,15 @@ img{
   width:200px;
   height:200px;
 }
-img:hover{
+.poke-container:hover{
   border:2px solid black;
+  border-radius:5px;
+}
+.scorecard{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:5px;
+}
+.scorecard div{
+ justify-self: center;
 }
