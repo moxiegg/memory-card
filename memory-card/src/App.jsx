@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { v4 as uuid } from "uuid";
+import Cardlist from "./Cardlist";
+import Scorecard from "./Scorecard";
 import "./App.css";
 function App() {
   const [users, setData] = useState([]);
@@ -96,24 +98,10 @@ function App() {
 
   return (
     <>
-      <div className="scorecard">
-        <div>Score : {score}</div>
-        <div>Best Score : {bestScore}</div>
-      </div>
+      <Scorecard score={score} bestScore={bestScore}/>
       <div className="container">
         {users.length > 0 && (
-          <div className="cards">
-            {users.map((user) => (
-              <div
-                className="poke-container"
-                key={user.id}
-                onClick={handleClick}
-                data-id={user.id}
-              >
-                <img src={user.img} alt={user.name} />
-              </div>
-            ))}
-          </div>
+          <Cardlist list={users} handleClick={handleClick} />
         )}
       </div>
     </>
